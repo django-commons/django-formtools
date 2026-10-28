@@ -10,6 +10,9 @@ Unreleased
 
 - Removed support for Python < 3.11
 
+- Made the ``form`` argument optional in ``WizardView.get_context_data()`` and
+  ``NamedUrlWizardView.get_context_data()``, defaulting to ``form=None``.
+
 2.7.0 (2026-07-09)
 ------------------
 

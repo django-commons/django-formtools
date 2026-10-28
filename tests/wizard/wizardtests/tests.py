@@ -387,6 +387,17 @@ class WizardTestGenericViewInterface(TestCase):
         self.assertEqual(response.context_data['test_key'], 'test_value')
         self.assertEqual(response.context_data['another_key'], 'another_value')
 
+    def test_get_context_data_without_form_argument(self):
+        class TestWizard(CookieWizardView):
+            def get(self, request, *args, **kwargs):
+                return self.render_to_response(self.get_context_data())
+
+        factory = RequestFactory()
+        view = TestWizard.as_view([forms.Form])
+        response = view(factory.get('/'))
+        self.assertIn('wizard', response.context_data)
+        self.assertIsInstance(response.context_data['wizard']['form'], forms.Form)
+
 
 class WizardTestPrefix(TestCase):
     def test_get_prefix(self):

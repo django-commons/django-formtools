@@ -377,6 +377,19 @@ class NamedFormTests:
         instance.render_done(None)
         self.assertEqual(instance.storage.current_step, 'start')
 
+    def test_get_context_data_without_form_argument(self):
+        request = get_request()
+
+        testform = self.formwizard_class.as_view(
+            [('start', Step1), ('step2', Step2)],
+            url_name=self.wizard_urlname)
+        response, instance = testform(request, step='start')
+
+        context = instance.get_context_data()
+        self.assertIn('wizard', context)
+        self.assertIsInstance(context['wizard']['form'], Step1)
+        self.assertEqual(context['wizard']['url_name'], self.wizard_urlname)
+
 
 class TestNamedUrlSessionWizardView(NamedUrlSessionWizardView):
 

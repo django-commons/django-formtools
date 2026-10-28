@@ -591,7 +591,7 @@ class WizardView(TemplateView):
             return keys.index(step)
         return None
 
-    def get_context_data(self, form, **kwargs):
+    def get_context_data(self, form=None, **kwargs):
         """
         Returns the template context for a step. You can overwrite this method
         to add more data for all or some steps. This method returns a
@@ -604,12 +604,14 @@ class WizardView(TemplateView):
         Example::
 
             class MyWizard(WizardView):
-                def get_context_data(self, form, **kwargs):
+                def get_context_data(self, form=None, **kwargs):
                     context = super().get_context_data(form=form, **kwargs)
                     if self.steps.current == 'my_step_name':
                         context.update({'another_var': True})
                     return context
         """
+        if form is None:
+            form = self.get_form()
         context = super().get_context_data(form=form, **kwargs)
         context.update(self.storage.extra_data)
         context['wizard'] = {
@@ -739,7 +741,7 @@ class NamedUrlWizardView(WizardView):
             return self.render_goto_step(wizard_goto_step)
         return super().post(*args, **kwargs)
 
-    def get_context_data(self, form, **kwargs):
+    def get_context_data(self, form=None, **kwargs):
         """
         NamedUrlWizardView provides the url_name of this wizard in the context
         dict `wizard`.

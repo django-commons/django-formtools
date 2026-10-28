@@ -418,7 +418,7 @@ Advanced ``WizardView`` methods
 
     Example to add extra variables for a specific step::
 
-        def get_context_data(self, form, **kwargs):
+        def get_context_data(self, form=None, **kwargs):
             context = super().get_context_data(form=form, **kwargs)
             if self.steps.current == 'my_step_name':
                 context.update({'another_var': True})
